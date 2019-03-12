@@ -107,4 +107,14 @@ export class AuthService implements OnDestroy {
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
+
+  getUserFromEmailInDatabase(email: string) {
+    return this.http.post(`${environment.apiURL}/users/email`, {
+      email: email
+    });
+  }
+
+  getPhotoURL(uid: string) {
+    return this.http.get(`${environment.apiURL}/users/photo/${uid}`);
+  }
 }

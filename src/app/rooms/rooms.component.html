@@ -7,7 +7,7 @@
     <div *ngFor="let room of rooms">
       <div
         *ngIf="room.created.uid === user.uid"
-        class="room-container rounded-lg mr-4 shadow-lg"
+        class="room-container rounded-lg mr-4 shadow-lg mt-4"
       >
         <svg
           version="1.1"
@@ -67,11 +67,28 @@
         </div>
         <br />
         <button
-          class="go-to-room-button rounded-b-lg bg-blue-darkest w-full text-blue-lighter py-2 text-sm"
+          class="rounded-b-lg bg-blue-darkest w-full text-blue-lighter py-2 text-sm"
         >
           Go to Room
         </button>
       </div>
+    </div>
+    <div
+      class="room-container rounded-lg mr-4 shadow-lg flex flex-col items-center mt-4"
+    >
+      <label
+        for="roomName"
+        class="mx-4 mt-4 text-grey-dark font-bold text-sm text-left mr-auto"
+        >Room Name</label
+      >
+      <input id="roomName" type="text" class="rounded-sm mx-4 mt-2 px-4 py-2" />
+
+      <br />
+      <button
+        class="rounded-lg bg-blue-darker hover:bg-blue-darkest text-blue-lighter py-2 px-4 text-sm"
+      >
+        Add New Room
+      </button>
     </div>
   </div>
 </div>
@@ -80,5 +97,6 @@
   *ngIf="roomSettings"
   [room]="getClickedRoom()"
   [users]="users"
+  [user]="user"
   (onSettingsClosed)="closeSettings()"
 ></app-room-settings>

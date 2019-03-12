@@ -7,19 +7,27 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {AuthComponent} from './home/auth/auth.component';
 import {HttpClientModule} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
 
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HomeComponent} from './home/home.component';
 import {RoomsComponent} from './rooms/rooms.component';
-import { RoomSettingsComponent } from './rooms/room-settings/room-settings.component';
+import {RoomSettingsComponent} from './rooms/room-settings/room-settings.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent, HomeComponent, RoomsComponent, RoomSettingsComponent],
+  declarations: [
+    AppComponent,
+    AuthComponent,
+    HomeComponent,
+    RoomsComponent,
+    RoomSettingsComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     }),

@@ -36,6 +36,13 @@ export class RoomsComponent implements OnInit {
       this.user = user;
     });
     let usersToFind = [];
+    this.roomService.roomUpdated.subscribe((room: Room) => {
+      this.rooms.forEach((value, index) => {
+        if (value._id === room._id) {
+          this.rooms[index] = room;
+        }
+      });
+    });
     this.rooms.map((room: Room) => {
       usersToFind.push(room.created.uid);
       room.permissions.map((permission) => {
