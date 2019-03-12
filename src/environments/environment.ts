@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyAnu3Z3dkJaFSg4Br23NDJtYSdigLMstoo',
+    authDomain: 'track-mate-23d06.firebaseapp.com',
+    databaseURL: 'https://track-mate-23d06.firebaseio.com',
+    projectId: 'track-mate-23d06',
+    storageBucket: 'track-mate-23d06.appspot.com',
+    messagingSenderId: '358306011016'
+  },
+  apiURL: 'http://localhost:3000/api'
 };
 
 /*

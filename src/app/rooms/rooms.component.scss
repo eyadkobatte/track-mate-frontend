@@ -1,0 +1,6 @@
+$blue-darkest: #12283a;
+$blue-darker: #1c3d5a;
+
+.room-container {
+  background: linear-gradient(145deg, $blue-darkest, $blue-darker);
+}
