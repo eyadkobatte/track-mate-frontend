@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  private user: User = null;
+  user: User = null;
   constructor(
     private authService: AuthService,
     private ngZone: NgZone,
