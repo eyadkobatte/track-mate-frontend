@@ -12,9 +12,10 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HomeComponent} from './home/home.component';
 import {RoomsComponent} from './rooms/rooms.component';
+import { RoomSettingsComponent } from './rooms/room-settings/room-settings.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent, HomeComponent, RoomsComponent],
+  declarations: [AppComponent, AuthComponent, HomeComponent, RoomsComponent, RoomSettingsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

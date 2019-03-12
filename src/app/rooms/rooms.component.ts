@@ -17,6 +17,8 @@ export class RoomsComponent implements OnInit {
 
   users: User[];
 
+  roomSettings = false;
+  clickedRoom: Room = null;
   constructor(
     private authService: AuthService,
     private roomService: RoomService,
@@ -54,5 +56,19 @@ export class RoomsComponent implements OnInit {
   getUserName(uid: string) {
     if (this.users)
       return this.users.filter((value) => value.uid === uid)[0].displayName;
+  }
+
+  openRoomSettings(room: Room) {
+    console.log('open room settings', room);
+    this.roomSettings = !this.roomSettings;
+    this.clickedRoom = room;
+  }
+
+  getClickedRoom() {
+    return this.clickedRoom;
+  }
+
+  closeSettings() {
+    this.roomSettings = !this.roomSettings;
   }
 }

@@ -4,3 +4,19 @@ $blue-darker: #1c3d5a;
 .room-container {
   background: linear-gradient(145deg, $blue-darkest, $blue-darker);
 }
+
+.settings-icon {
+  width: 1rem;
+  fill: white;
+  cursor: pointer;
+}
+
+app-room-settings {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+}
