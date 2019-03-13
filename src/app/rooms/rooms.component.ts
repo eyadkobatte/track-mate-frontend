@@ -28,8 +28,14 @@ export class RoomsComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.activatedRoute.data
-      .pipe(map((data) => data.rooms))
+      .pipe(
+        map((data) => {
+          console.log(data);
+          return data.rooms;
+        })
+      )
       .subscribe((rooms) => {
+        console.log(rooms);
         this.rooms = rooms;
       });
   }

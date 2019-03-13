@@ -3,12 +3,9 @@
     Welcome back, {{ user.displayName }}
   </h2>
   <div class="flex rounded-lg mt-4 flex-wrap" *ngIf="user">
-    <h3 class="text-blue-light font-thin w-full my-4">Rooms you created</h3>
+    <h3 class="text-blue-light font-thin w-full my-4">Rooms you can Access</h3>
     <div *ngFor="let room of rooms">
-      <div
-        *ngIf="room.created.uid === user.uid"
-        class="room-container rounded-lg mr-4 shadow-lg mt-4"
-      >
+      <div class="room-container rounded-lg mr-4 shadow-lg mt-4">
         <svg
           version="1.1"
           id="Capa_1"
