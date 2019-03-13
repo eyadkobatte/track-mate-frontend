@@ -9,10 +9,18 @@ import {Subject} from 'rxjs';
 })
 export class RoomService {
   roomUpdated = new Subject<Room>();
+  roomsRecieved = new Subject<Room[]>();
+  roomAdded = new Subject<Room>();
+  roomRemoved = new Subject<Room>();
 
-  rooms: Room[];
+  rooms: Room[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.roomsRecieved.subscribe((rooms: Room[]) => {
+      this.rooms = rooms;
+      console.log('recieved rooms in service', this.rooms);
+    });
+  }
 
   getRoomsForUser(uid: string) {
     return this.http.get<Room[]>(`${environment.apiURL}/rooms/u/${uid}`);
@@ -34,6 +42,11 @@ export class RoomService {
         level: level
       })
       .subscribe((room: Room) => {
+        this.rooms.forEach((value: Room, index: number) => {
+          if (value._id === room._id) {
+            this.rooms[index] = room;
+          }
+        });
         this.roomUpdated.next(room);
       });
   }
@@ -45,7 +58,40 @@ export class RoomService {
         _id: permissionId
       })
       .subscribe((room: Room) => {
+        this.rooms.forEach((value: Room, index: number) => {
+          if (value._id === room._id) {
+            this.rooms[index] = room;
+          }
+        });
         this.roomUpdated.next(room);
+      });
+  }
+
+  addNewRoom(roomName, uid) {
+    this.http
+      .post(`${environment.apiURL}/rooms/`, {
+        roomName: roomName,
+        description: 'Room created using Angular',
+        created: {
+          uid: uid
+        }
+      })
+      .subscribe((room: Room) => {
+        this.rooms.push(room);
+        this.roomAdded.next(room);
+      });
+  }
+
+  deleteRoom(room: Room) {
+    this.http
+      .delete(`${environment.apiURL}/rooms/${room._id}`)
+      .subscribe((room: Room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (!(value._id === room._id)) {
+            return value;
+          }
+        });
+        this.roomRemoved.next(room);
       });
   }
 }

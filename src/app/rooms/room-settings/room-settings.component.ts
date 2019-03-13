@@ -70,4 +70,9 @@ export class RoomSettingsComponent implements OnInit {
   removePermission(room: Room, permissionId: string) {
     this.roomService.removePermission(room, permissionId);
   }
+
+  deleteRoom(room: Room) {
+    this.onSettingsClosed.emit();
+    this.roomService.deleteRoom(room);
+  }
 }

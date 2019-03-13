@@ -11,6 +11,13 @@
       >
     </h4>
 
+    <button
+      class="rounded-lg bg-red-light text-white font-bold my-2 py-2 px-4 hover:bg-red-darker"
+      (click)="deleteRoom(room)"
+    >
+      Delete Room
+    </button>
+
     <h4 class="text-white mt-4">Permissions</h4>
     <div *ngFor="let permission of room.permissions" class="mb-2">
       <div class="text-white flex flex-row items-center mt-4">
