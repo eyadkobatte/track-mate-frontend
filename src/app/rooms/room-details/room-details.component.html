@@ -1,0 +1,58 @@
+<div class="container mx-auto mt-4" *ngIf="room">
+  <h2 class="text-white">{{ room.roomName }}</h2>
+
+  <ul class="mt-4 list-reset">
+    <li class="py-1 pr-2 inline-block">
+      <button
+        class="px-4 py-2 text-white rounded bg-blue-darker mb-2 text-sm"
+        (click)="addingNewNote = !addingNewNote"
+      >
+        Add New Note
+      </button>
+    </li>
+    <li class="py-1 pr-2 inline-block">
+      <button class="px-4 py-2 text-white rounded bg-blue-darker mb-2 text-sm">
+        Add New List
+      </button>
+    </li>
+    <li class="py-1 pr-2 inline-block">
+      <button class="px-4 py-2 text-white rounded bg-blue-darker mb-2 text-sm">
+        Add New Table
+      </button>
+    </li>
+  </ul>
+  <div *ngIf="addingNewNote">
+    <label for="newNote" class="block text-blue-dark font-bold mb-2 text-sm"
+      >Note</label
+    >
+    <input
+      id="newNote"
+      type="text"
+      class="shadow appearance-none border rounded-lg py-2 px-4 mb-4 text-grey-darker leading-tight"
+      [(ngModel)]="newNoteInput"
+    />
+    <br />
+    <button
+      class="px-4 py-2 text-white rounded bg-green-dark mb-2 text-sm"
+      (click)="saveNote()"
+    >
+      Save Note
+    </button>
+  </div>
+
+  <div class="mt-6">
+    <h4 class="text-white mb-4">Notes</h4>
+    <div *ngFor="let note of room.noteItems" class="mb-2 mt-2 w-48">
+      <p class="text-white">{{ note.value }}</p>
+      <div class="text-right">
+        <span class="text-grey-light"
+          >Added On: <b>{{ note.addedBy.time | date }}</b></span
+        >
+        <br />
+        <span class="text-grey-light"
+          >by: <b>{{ getUsername(note.addedBy.uid) | async }}</b></span
+        >
+      </div>
+    </div>
+  </div>
+</div>

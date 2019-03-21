@@ -1,11 +1,11 @@
-<div class="container mx-auto mt-4">
+<div class="container mx-auto mt-4" *ngIf="rooms">
   <h2 *ngIf="user" class="text-white font-extrabold text-base mt-4">
     Welcome back, {{ user.displayName }}
   </h2>
-  <div class="flex rounded-lg mt-4 flex-wrap" *ngIf="user">
-    <h3 class="text-blue-light font-thin w-full my-4">Rooms you can Access</h3>
+  <div class="flex rounded-lg mt-4 flex-wrap justify-center" *ngIf="user">
+    <h3 class="text-blue-light font-thin w-full my-4">Rooms you can access</h3>
     <div *ngFor="let room of rooms">
-      <div class="room-container rounded-lg mr-4 shadow-lg mt-4">
+      <div class="room-container rounded-lg mr-4 shadow-lg mt-4 relative w-64">
         <svg
           version="1.1"
           id="Capa_1"
@@ -14,10 +14,11 @@
           x="0px"
           y="0px"
           viewBox="0 0 478.703 478.703"
-          class="settings-icon float-right m-4"
+          class="settings-icon pin-r mt-4 mr-4"
           style="enable-background:new 0 0 478.703 478.703;"
           xml:space="preserve"
           (click)="openRoomSettings(room)"
+          *ngIf="canUserAccessSettings(room)"
         >
           <g>
             <path
@@ -64,7 +65,8 @@
         </div>
         <br />
         <button
-          class="rounded-b-lg bg-blue-darkest w-full text-blue-lighter py-2 text-sm"
+          class="rounded-b-lg bg-blue-darkest w-full text-blue-lighter hover:text-white py-2 text-sm"
+          (click)="goToRoom(room)"
         >
           Go to Room
         </button>
@@ -87,7 +89,7 @@
 
       <br />
       <button
-        class="rounded-lg bg-blue-darker hover:bg-blue-darkest text-blue-lighter py-2 px-4 text-sm"
+        class="rounded bg-blue-darker hover:bg-blue-darkest text-blue-lighter py-2 px-4 mb-4 text-sm"
         (click)="addNewRoom()"
       >
         Add New Room

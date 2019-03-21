@@ -3,7 +3,8 @@ import {HomeComponent} from './home/home.component';
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {RoomsComponent} from './rooms/rooms.component';
-import {RoomResolverService} from './rooms/resolver/room-resolver.service';
+import {RoomDetailsComponent} from './rooms/room-details/room-details.component';
+import {RoomService} from './rooms/services/room.service';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -12,8 +13,13 @@ const routes: Routes = [
     component: RoomsComponent,
     canActivate: [AuthGuard],
     resolve: {
-      rooms: RoomResolverService
+      rooms: RoomService
     }
+  },
+  {
+    path: 'r/:id',
+    component: RoomDetailsComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

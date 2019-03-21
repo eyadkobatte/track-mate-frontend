@@ -16,14 +16,13 @@ export interface Room {
       _id?: string;
     }
   ];
-  items: [
+  noteItems: [
     {
-      itemName: string;
+      value: string;
       addedBy: {
         uid: string;
         time: Date;
       };
-      enabled: boolean;
       _id?: string;
     }
   ];

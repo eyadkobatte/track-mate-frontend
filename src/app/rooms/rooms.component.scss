@@ -1,5 +1,6 @@
 $blue-darkest: #12283a;
 $blue-darker: #1c3d5a;
+$blue-light: #6cb2eb;
 
 .room-container {
   background: linear-gradient(145deg, $blue-darkest, $blue-darker);
@@ -9,6 +10,11 @@ $blue-darker: #1c3d5a;
   width: 1rem;
   fill: white;
   cursor: pointer;
+  position: absolute;
+}
+
+.settings-icon:hover {
+  fill: $blue-light;
 }
 
 app-room-settings {
@@ -20,3 +26,4 @@ app-room-settings {
   background: rgba(0, 0, 0, 0.7);
   transition: opacity 500ms;
 }
+

@@ -19,7 +19,8 @@ export class RoomSettingsComponent implements OnInit {
   addPermission = false;
 
   emailInPermissionForm: string = '';
-  levelInPermissionForm: Number;
+  levelInPermissionForm: Number = 0;
+
   constructor(
     private authService: AuthService,
     private roomService: RoomService
@@ -36,16 +37,15 @@ export class RoomSettingsComponent implements OnInit {
   }
 
   getUsername(uid: string) {
-    if (this.users.find((value) => value.uid === uid))
-      return this.users.find((value) => value.uid === uid).displayName;
-    else return 'User';
+    if (this.users.length > 0) {
+      return this.users.find((user) => user.uid === uid).displayName;
+    } else return 'User';
   }
 
   getUserPhoto(uid: string): string {
-    console.log(uid);
-    if (this.users.find((value) => value.uid === uid))
-      return this.users.find((value) => value.uid === uid).photoURL;
-    else return 'https://png.pngtree.com/svg/20161027/631929649c.svg';
+    if (this.users.length > 0) {
+      return this.users.find((user) => user.uid === uid).photoURL;
+    } else return 'https://png.pngtree.com/svg/20161027/631929649c.svg';
   }
 
   getPermissionLevel(level: number) {
@@ -53,20 +53,32 @@ export class RoomSettingsComponent implements OnInit {
   }
 
   submitPermissionForm() {
+    console.log('submitted');
     this.authService
       .getUserFromEmailInDatabase(this.emailInPermissionForm)
       .subscribe((user: User) => {
         if (user) {
-          this.roomService.addPermissionsInRoom(
-            this.room,
-            user.uid,
-            this.user.uid,
-            this.levelInPermissionForm
-          );
+          if (
+            this.room.permissions.find(
+              (permission) => permission.uid === user.uid
+            )
+          ) {
+            window.alert('User already added');
+          } else if (user.uid === this.room.created.uid) {
+            window.alert('User is creator. no need to add permission');
+          } else {
+            this.roomService.addPermissionsInRoom(
+              this.room,
+              user.uid,
+              this.user.uid,
+              this.levelInPermissionForm
+            );
+          }
         }
       });
+    this.emailInPermissionForm = '';
   }
-  
+
   removePermission(room: Room, permissionId: string) {
     this.roomService.removePermission(room, permissionId);
   }

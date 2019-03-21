@@ -19,6 +19,8 @@ export class AuthService implements OnDestroy {
 
   userLoggedIn = new BehaviorSubject<User>(null);
 
+  allUsers: User[] = []
+
   constructor(
     private afAuth: AngularFireAuth,
     private http: HttpClient,
@@ -114,7 +116,9 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  getPhotoURL(uid: string) {
-    return this.http.get(`${environment.apiURL}/users/photo/${uid}`);
+  getUserFromUIDInDatabase(uid: string) {
+    return this.http.post(`${environment.apiURL}/users/uid`, {
+      uid: uid
+    });
   }
 }

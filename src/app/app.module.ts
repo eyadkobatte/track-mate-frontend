@@ -14,6 +14,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HomeComponent} from './home/home.component';
 import {RoomsComponent} from './rooms/rooms.component';
 import {RoomSettingsComponent} from './rooms/room-settings/room-settings.component';
+import { RoomDetailsComponent } from './rooms/room-details/room-details.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {RoomSettingsComponent} from './rooms/room-settings/room-settings.compone
     AuthComponent,
     HomeComponent,
     RoomsComponent,
-    RoomSettingsComponent
+    RoomSettingsComponent,
+    RoomDetailsComponent
   ],
   imports: [
     BrowserModule,

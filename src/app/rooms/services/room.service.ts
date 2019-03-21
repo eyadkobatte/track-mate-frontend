@@ -1,29 +1,45 @@
+import {User} from 'firebase';
+import {AuthService} from './../../home/auth/services/auth.service';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {environment} from 'src/environments/environment';
 import {Room} from '../room';
-import {Subject} from 'rxjs';
+import {Subject, Observable, BehaviorSubject} from 'rxjs';
+import {
+  Resolve,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot
+} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class RoomService implements Resolve<Room[]> {
+  roomsRecieved = new BehaviorSubject<Room[]>(null);
   roomUpdated = new Subject<Room>();
-  roomsRecieved = new Subject<Room[]>();
-  roomAdded = new Subject<Room>();
-  roomRemoved = new Subject<Room>();
 
   rooms: Room[] = [];
+  user: User = null;
 
-  constructor(private http: HttpClient) {
-    this.roomsRecieved.subscribe((rooms: Room[]) => {
-      this.rooms = rooms;
-      console.log('recieved rooms in service', this.rooms);
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.authService.userLoggedIn.subscribe((user: User) => {
+      this.user = user;
     });
   }
 
-  getRoomsForUser(uid: string) {
-    return this.http.get<Room[]>(`${environment.apiURL}/rooms/u/${uid}`);
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any> | Observable<never> {
+    let uid = route.paramMap.get('uid');
+    let getRooms = this.http.get<Room[]>(
+      `${environment.apiURL}/rooms/u/${uid}`
+    );
+    getRooms.subscribe((rooms: Room[]) => {
+      this.rooms = rooms;
+      this.roomsRecieved.next(this.rooms);
+    });
+    return getRooms;
   }
 
   addPermissionsInRoom(
@@ -47,6 +63,7 @@ export class RoomService {
             this.rooms[index] = room;
           }
         });
+        this.roomsRecieved.next(this.rooms);
         this.roomUpdated.next(room);
       });
   }
@@ -63,11 +80,12 @@ export class RoomService {
             this.rooms[index] = room;
           }
         });
+        this.roomsRecieved.next(this.rooms);
         this.roomUpdated.next(room);
       });
   }
 
-  addNewRoom(roomName, uid) {
+  addNewRoom(roomName: string, uid: string) {
     this.http
       .post(`${environment.apiURL}/rooms/`, {
         roomName: roomName,
@@ -78,7 +96,7 @@ export class RoomService {
       })
       .subscribe((room: Room) => {
         this.rooms.push(room);
-        this.roomAdded.next(room);
+        this.roomsRecieved.next(this.rooms);
       });
   }
 
@@ -86,12 +104,36 @@ export class RoomService {
     this.http
       .delete(`${environment.apiURL}/rooms/${room._id}`)
       .subscribe((room: Room) => {
-        this.rooms = this.rooms.filter((value, index) => {
+        this.rooms = this.rooms.filter((value: Room) => {
           if (!(value._id === room._id)) {
             return value;
           }
         });
-        this.roomRemoved.next(room);
+        this.roomsRecieved.next(this.rooms);
+      });
+  }
+
+  getRoom(roomId: string) {
+    return this.http.get(`${environment.apiURL}/rooms/r/${roomId}`);
+  }
+
+  addNewNote(roomID: string, note: string) {
+    this.http
+      .put<Room>(`${environment.apiURL}/rooms/${roomID}/note`, {
+        operation: 'ADD',
+        value: note,
+        addedBy: {
+          uid: this.user.uid
+        }
+      })
+      .subscribe((room: Room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (value._id === room._id) {
+            this.rooms[index] = value;
+          }
+        });
+        this.roomsRecieved.next(this.rooms);
+        this.roomUpdated.next(room);
       });
   }
 }
