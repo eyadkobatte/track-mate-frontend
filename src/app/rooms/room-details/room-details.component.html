@@ -5,13 +5,16 @@
     <li class="py-1 pr-2 inline-block">
       <button
         class="px-4 py-2 text-white rounded bg-blue-darker mb-2 text-sm"
-        (click)="addingNewNote = !addingNewNote"
+        (click)="addingNewItem = true; addingWhatItem = 'note'"
       >
         Add New Note
       </button>
     </li>
     <li class="py-1 pr-2 inline-block">
-      <button class="px-4 py-2 text-white rounded bg-blue-darker mb-2 text-sm">
+      <button
+        class="px-4 py-2 text-white rounded bg-blue-darker mb-2 text-sm"
+        (click)="addingNewItem = true; addingWhatItem = 'list'"
+      >
         Add New List
       </button>
     </li>
@@ -21,38 +24,128 @@
       </button>
     </li>
   </ul>
-  <div *ngIf="addingNewNote">
-    <label for="newNote" class="block text-blue-dark font-bold mb-2 text-sm"
-      >Note</label
-    >
-    <input
-      id="newNote"
-      type="text"
-      class="shadow appearance-none border rounded-lg py-2 px-4 mb-4 text-grey-darker leading-tight"
-      [(ngModel)]="newNoteInput"
-    />
-    <br />
-    <button
-      class="px-4 py-2 text-white rounded bg-green-dark mb-2 text-sm"
-      (click)="saveNote()"
-    >
-      Save Note
-    </button>
+  <div *ngIf="addingNewItem">
+    <div *ngIf="addingWhatItem === 'note'">
+      <div>
+        <span
+          class="text-red-dark mb-2 cursor-pointer"
+          (click)="addingNewItem = false"
+          >&times;</span
+        >
+      </div>
+      <label for="newNote" class="block text-blue-dark font-bold mb-2 text-sm"
+        >Note</label
+      >
+      <input
+        id="newNote"
+        type="text"
+        class="shadow appearance-none border rounded-lg py-2 px-4 mb-4 text-grey-darker leading-tight"
+        [(ngModel)]="newNoteInput"
+      />
+      <br />
+      <button
+        class="px-4 py-2 text-white rounded bg-green-dark mb-2 text-sm"
+        (click)="saveNote()"
+      >
+        Save Note
+      </button>
+    </div>
+    <div *ngIf="addingWhatItem === 'list'">
+      <div>
+        <span
+          class="text-red-dark mb-2 cursor-pointer"
+          (click)="addingNewItem = false"
+          >&times;</span
+        >
+      </div>
+      <label
+        for="newListName"
+        class="block text-blue-dark font-bold mb-2 text-sm"
+        >List</label
+      >
+      <input
+        id="newListName"
+        type="text"
+        class="shadow appearance-none border rounded-lg py-2 px-4 mb-4 text-grey-darker leading-tight"
+        [(ngModel)]="newListNameInput"
+      />
+      <br />
+      <button
+        class="px-4 py-2 text-white rounded bg-green-dark mb-2 text-sm"
+        (click)="saveList()"
+      >
+        Save List
+      </button>
+    </div>
+  </div>
+
+  <!-- All Notes -->
+  <div class="mt-6 h-64 overflow-y-auto lg:w-1/3">
+    <h4 class="text-white mb-4">Notes</h4>
+    <ul class="pl-0">
+      <li *ngFor="let note of room.noteItems" class="list-reset">
+        <div
+          class="mb-4 mt-2 w-full rounded shadow bg-blue-darker p-4 shadow-lg relative"
+        >
+          <span
+            class="absolute pin-t pin-r mt-2 mr-2 text-red-dark cursor-pointer"
+            (click)="deleteNoteItem(note)"
+            >&times;</span
+          >
+          <p class="text-white mb-2">{{ note.value }}</p>
+          <div class="text-right">
+            <span class="text-grey-light text-sm"
+              >Added On: <b>{{ note.addedBy.time | date }}</b></span
+            >
+            <br />
+            <span class="text-grey-light text-sm"
+              >by: <b>{{ getUsername(note.addedBy.uid) }}</b></span
+            >
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 
   <div class="mt-6">
-    <h4 class="text-white mb-4">Notes</h4>
-    <div *ngFor="let note of room.noteItems" class="mb-2 mt-2 w-48">
-      <p class="text-white">{{ note.value }}</p>
-      <div class="text-right">
-        <span class="text-grey-light"
-          >Added On: <b>{{ note.addedBy.time | date }}</b></span
+    <h4 class="text-white mb-4">Lists</h4>
+    <ul class="pl-0 list-reset">
+      <!-- Each list comes here -->
+      <li *ngFor="let list of room.listItems" class="lg:w-1/4">
+        <div
+          class="mb-4 mt-2 w-full rounded shadow bg-blue-darker p-4 shadow-lg relative"
         >
-        <br />
-        <span class="text-grey-light"
-          >by: <b>{{ getUsername(note.addedBy.uid) | async }}</b></span
-        >
-      </div>
-    </div>
+          <span
+            class="absolute pin-t pin-r mt-2 mr-2 text-red-dark cursor-pointer"
+            >&times;</span
+          >
+          <p class="text-white mb-2">{{ list.listName }}</p>
+          <div class="text-right">
+            <span class="text-grey-light text-sm"
+              >Added On: <b>{{ list.addedBy.time | date }}</b></span
+            >
+            <br />
+            <span class="text-grey-light text-sm"
+              >by: <b>{{ getUsername(list.addedBy.uid) }}</b></span
+            >
+          </div>
+          <p class="text-white mb-2">Items</p>
+          <ul class="list-reset">
+            <li *ngFor="let item of list.items">
+              {{ item.itemName }}
+            </li>
+            <li class="mt-4">
+              <input
+                type="text"
+                class="shadow appearance-none border rounded-lg py-2 mb-2 text-grey-darker leading-tight px-4"
+              />
+              <button class="bg-blue-darkest text-white py-2 px-4 rounded-lg">
+                Add
+              </button>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>

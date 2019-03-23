@@ -14,7 +14,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HomeComponent} from './home/home.component';
 import {RoomsComponent} from './rooms/rooms.component';
 import {RoomSettingsComponent} from './rooms/room-settings/room-settings.component';
-import { RoomDetailsComponent } from './rooms/room-details/room-details.component';
+import {RoomDetailsComponent} from './rooms/room-details/room-details.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { RoomDetailsComponent } from './rooms/room-details/room-details.componen
       enabled: environment.production
     }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

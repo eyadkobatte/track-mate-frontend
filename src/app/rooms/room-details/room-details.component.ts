@@ -13,8 +13,12 @@ export class RoomDetailsComponent implements OnInit {
   roomId: string;
   room: Room;
 
-  addingNewNote = false;
+  addingNewItem = false;
+  addingWhatItem: 'note' | 'list' | 'table';
+
   newNoteInput = '';
+  newListNameInput = '';
+
   constructor(
     private roomService: RoomService,
     private authService: AuthService,
@@ -38,17 +42,33 @@ export class RoomDetailsComponent implements OnInit {
   saveNote() {
     this.roomService.addNewNote(this.roomId, this.newNoteInput);
     this.newNoteInput = '';
-    this.addingNewNote = false;
+    this.addingNewItem = false;
+  }
+
+  saveList() {
+    this.roomService.addNewList(this.roomId, this.newListNameInput);
+    this.newListNameInput = '';
+    this.addingNewItem = false;
   }
 
   getUsername(uid: string) {
-    // return this.authService.getUserFromUIDInDatabase(uid).subscribe(
-    //   (user) => {
+    // this.authService
+    //   .getUserFromUIDInDatabase(uid)
+    //   .then((user) => {
+    //     console.log(user);
     //     return user;
-    //   },
-    //   (error) => {
+    //   })
+    //   .catch((error) => {
     //     console.error(error);
-    //   }
-    // );
+    //   });
+    return 'Eyad Kobatte';
+  }
+
+  deleteNoteItem(note: {
+    _id: string;
+    value: string;
+    addedBy: {uid: string; time: Date};
+  }) {
+    this.roomService.deleteNoteInRoom(this.roomId, note._id);
   }
 }

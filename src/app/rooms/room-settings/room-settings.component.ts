@@ -56,7 +56,7 @@ export class RoomSettingsComponent implements OnInit {
     console.log('submitted');
     this.authService
       .getUserFromEmailInDatabase(this.emailInPermissionForm)
-      .subscribe((user: User) => {
+      .then((user: User) => {
         if (user) {
           if (
             this.room.permissions.find(
@@ -75,6 +75,9 @@ export class RoomSettingsComponent implements OnInit {
             );
           }
         }
+      })
+      .catch((error) => {
+        console.error(error);
       });
     this.emailInPermissionForm = '';
   }

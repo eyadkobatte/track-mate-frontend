@@ -26,5 +26,26 @@ export interface Room {
       _id?: string;
     }
   ];
+  listItems: [
+    {
+      _id?: string;
+      listName: string;
+      addedBy: {
+        uid: string;
+        time: Date;
+      };
+      items: [
+        {
+          _id?: string;
+          itemName: string;
+          addedBy: {
+            uid: string;
+            time: Date;
+          };
+          enabled: boolean;
+        }
+      ];
+    }
+  ];
   _id?: string;
 }

@@ -26,7 +26,6 @@ export class RoomsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private roomService: RoomService,
-    private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
 

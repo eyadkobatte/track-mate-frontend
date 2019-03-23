@@ -136,4 +136,40 @@ export class RoomService implements Resolve<Room[]> {
         this.roomUpdated.next(room);
       });
   }
+
+  addNewList(roomId: string, listName: string) {
+    this.http
+      .put<Room>(`${environment.apiURL}/rooms/${roomId}/list`, {
+        operation: 'ADD',
+        listName: listName,
+        addedBy: {
+          uid: this.user.uid
+        }
+      })
+      .subscribe((room: Room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (value._id === room._id) {
+            this.rooms[index] = value;
+          }
+        });
+        this.roomsRecieved.next(this.rooms);
+        this.roomUpdated.next(room);
+      });
+  }
+  deleteNoteInRoom(roomId: string, noteId: string) {
+    this.http
+      .put<Room>(`${environment.apiURL}/rooms/${roomId}/note`, {
+        operation: 'REMOVE',
+        _id: noteId
+      })
+      .subscribe((room: Room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (value._id === room._id) {
+            this.rooms[index] = room;
+          }
+        });
+        this.roomsRecieved.next(this.rooms);
+        this.roomUpdated.next(room);
+      });
+  }
 }

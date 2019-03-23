@@ -19,7 +19,7 @@ export class AuthService implements OnDestroy {
 
   userLoggedIn = new BehaviorSubject<User>(null);
 
-  allUsers: User[] = []
+  allUsers: User[] = [];
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -111,14 +111,48 @@ export class AuthService implements OnDestroy {
   }
 
   getUserFromEmailInDatabase(email: string) {
-    return this.http.post(`${environment.apiURL}/users/email`, {
-      email: email
+    const user = new Promise((resolve, reject) => {
+      if (this.allUsers.find((user) => user.email === email)) {
+        resolve(this.allUsers.find((user) => user.email === email));
+      } else {
+        this.http
+          .post(`${environment.apiURL}/users/email`, {
+            email: email
+          })
+          .subscribe(
+            (user: User) => {
+              this.allUsers.push(user);
+              resolve(user);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      }
     });
+    return user;
   }
 
   getUserFromUIDInDatabase(uid: string) {
-    return this.http.post(`${environment.apiURL}/users/uid`, {
-      uid: uid
+    const user = new Promise((resolve, reject) => {
+      if (this.allUsers.find((user) => user.uid === uid)) {
+        resolve(this.allUsers.find((user) => user.uid === uid));
+      } else {
+        this.http
+          .post(`${environment.apiURL}/users/email`, {
+            uid: uid
+          })
+          .subscribe(
+            (user: User) => {
+              this.allUsers.push(user);
+              resolve(user);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+      }
     });
+    return user;
   }
 }
