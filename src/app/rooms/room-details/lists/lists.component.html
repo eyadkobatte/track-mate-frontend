@@ -1,0 +1,51 @@
+<li class="lg:w-1/4">
+  <div
+    class="mb-4 mt-2 w-full rounded shadow bg-blue-darker p-4 shadow-lg relative"
+  >
+    <span
+      class="absolute pin-t pin-r mt-2 mr-2 text-red-dark cursor-pointer"
+      (click)="deleteList()"
+      >&times;</span
+    >
+    <p class="text-white mb-2">{{ list.listName }}</p>
+    <div class="text-right">
+      <span class="text-grey-light text-sm"
+        >Added On: <b>{{ list.addedBy.time | date }}</b></span
+      >
+      <br />
+      <span class="text-grey-light text-sm"
+        >by: <b>{{ getUsername(list.addedBy.uid) }}</b></span
+      >
+    </div>
+    <p class="text-white mb-2">Items</p>
+    <ul class="list-reset">
+      <li *ngFor="let item of list.items">
+        <div class=" mb-2 relative shadow p-4">
+          <span
+            class="absolute pin-t pin-r mr-4 mt-4 text-red-dark cursor-pointer"
+            (click)="deleteItemFromList(item._id)"
+            >&times;</span
+          >
+          <p class="text-white">{{ item.itemName }}</p>
+          <small class="text-blue-lighter text-xs"
+            >By {{ getUsername(item.addedBy.uid) }} on
+            {{ item.addedBy.time | date }}</small
+          >
+        </div>
+      </li>
+      <li class="mt-4">
+        <input
+          type="text"
+          class="shadow appearance-none border rounded-lg py-2 mb-2 text-grey-darker leading-tight px-4"
+          [(ngModel)]="newItemInput"
+        />
+        <button
+          class="bg-blue-darkest text-white py-2 px-4 rounded-lg"
+          (click)="addNewItem()"
+        >
+          Add
+        </button>
+      </li>
+    </ul>
+  </div>
+</li>

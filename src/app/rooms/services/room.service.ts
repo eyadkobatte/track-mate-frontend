@@ -156,6 +156,7 @@ export class RoomService implements Resolve<Room[]> {
         this.roomUpdated.next(room);
       });
   }
+
   deleteNoteInRoom(roomId: string, noteId: string) {
     this.http
       .put<Room>(`${environment.apiURL}/rooms/${roomId}/note`, {
@@ -163,6 +164,60 @@ export class RoomService implements Resolve<Room[]> {
         _id: noteId
       })
       .subscribe((room: Room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (value._id === room._id) {
+            this.rooms[index] = room;
+          }
+        });
+        this.roomsRecieved.next(this.rooms);
+        this.roomUpdated.next(room);
+      });
+  }
+
+  deleteListFromRoom(roomId: string, listId: string) {
+    this.http
+      .put<Room>(`${environment.apiURL}/rooms/${roomId}/list`, {
+        operation: 'REMOVE',
+        _id: listId
+      })
+      .subscribe((room: Room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (value._id === room._id) {
+            this.rooms[index] = room;
+          }
+        });
+        this.roomsRecieved.next(this.rooms);
+        this.roomUpdated.next(room);
+      });
+  }
+
+  addItemInList(roomId: string, listId: string, itemName: string) {
+    this.http
+      .put<Room>(`${environment.apiURL}/rooms/${roomId}/list/${listId}/item`, {
+        operation: 'ADD',
+        itemName: itemName,
+        addedBy: {
+          uid: this.user.uid
+        }
+      })
+      .subscribe((room) => {
+        this.rooms = this.rooms.filter((value, index) => {
+          if (value._id === room._id) {
+            this.rooms[index] = room;
+          }
+        });
+        this.roomsRecieved.next(this.rooms);
+        this.roomUpdated.next(room);
+      });
+  }
+
+  deleteItemFromList(roomId: string, listId: string, itemId: string) {
+    this.http
+      .put<Room>(`${environment.apiURL}/rooms/${roomId}/list/${listId}/item`, {
+        operation: 'REMOVE',
+        _id: itemId
+      })
+      .subscribe((room) => {
         this.rooms = this.rooms.filter((value, index) => {
           if (value._id === room._id) {
             this.rooms[index] = room;

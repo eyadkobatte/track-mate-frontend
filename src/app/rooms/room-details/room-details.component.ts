@@ -64,11 +64,11 @@ export class RoomDetailsComponent implements OnInit {
     return 'Eyad Kobatte';
   }
 
-  deleteNoteItem(note: {
-    _id: string;
-    value: string;
-    addedBy: {uid: string; time: Date};
-  }) {
-    this.roomService.deleteNoteInRoom(this.roomId, note._id);
+  deleteNoteItem(noteId: string) {
+    this.roomService.deleteNoteInRoom(this.roomId, noteId);
+  }
+
+  deleteList(listId: string) {
+    this.roomService.deleteListFromRoom(this.roomId, listId);
   }
 }
