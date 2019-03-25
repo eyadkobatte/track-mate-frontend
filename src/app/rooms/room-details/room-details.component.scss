@@ -1,0 +1,18 @@
+.note-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.3);
+  border-radius: 4rem;
+  background-color: none;
+}
+
+.note-container::-webkit-scrollbar {
+  width: 12px;
+  background-color: none;
+}
+
+.note-container::-webkit-scrollbar-thumb {
+  border-radius: 4rem;
+  box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.3);
+  background-color: #2b6cb0;
+}

@@ -1,6 +1,7 @@
-$blue-darkest: #12283a;
-$blue-darker: #1c3d5a;
-$blue-light: #6cb2eb;
+$blue-darkest: #2a4365;
+$blue-darker: #2c5282;
+$blue-light: #4299e1;
+$blue-lighter: #ebf8ff;
 
 .room-container {
   background: linear-gradient(145deg, $blue-darkest, $blue-darker);
@@ -8,7 +9,7 @@ $blue-light: #6cb2eb;
 
 .settings-icon {
   width: 1rem;
-  fill: white;
+  fill: $blue-lighter;
   cursor: pointer;
   position: absolute;
 }

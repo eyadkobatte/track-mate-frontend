@@ -1,26 +1,26 @@
 <div
-  class="room-settings-container bg-blue-darker rounded-lg p-4 mx-auto mt-16 lg:w-1/2 sm:w-3/4 md:w-3/4 relative"
+  class="room-settings-container bg-blue-900 rounded-lg p-4 mx-auto mt-16 lg:w-1/2 sm:w-3/4 md:w-3/4 relative"
 >
-  <div class="bg-blue-darker">
-    <h4 class="text-white">
+  <div class="bg-blue-900">
+    <h4 class="text-blue-100">
       Settings for {{ room.roomName }}
       <span
-        class="float-right cursor-pointer text-white"
+        class="float-right cursor-pointer text-blue-100"
         (click)="closeSettings()"
         >&times;</span
       >
     </h4>
 
     <button
-      class="rounded-lg bg-red-light text-white font-bold my-2 py-2 px-4 hover:bg-red-darker"
+      class="rounded-lg bg-red-600 text-blue-100 font-bold my-2 py-2 px-4 hover:bg-red-800"
       (click)="deleteRoom(room)"
     >
       Delete Room
     </button>
 
-    <h4 class="text-white mt-4">Permissions</h4>
+    <h4 class="text-blue-100 mt-4">Permissions</h4>
     <div *ngFor="let permission of room.permissions" class="mb-2">
-      <div class="text-white flex flex-row items-center mt-4">
+      <div class="text-blue-100 flex flex-row items-center mt-4">
         <img
           class="w-10 h-10 rounded-full mr-2"
           src="{{ getUserPhoto(permission.uid) }}"
@@ -29,51 +29,51 @@
         <span>&nbsp;-&nbsp;</span>
         <span>{{ getPermissionLevel(permission.level) }}</span>
         <span
-          class="ml-4 text-red-light cursor-pointer"
+          class="ml-4 text-red-600 cursor-pointer"
           (click)="removePermission(room, permission._id)"
           >&times;</span
         >
       </div>
     </div>
     <button
-      class="text-white hover:text-blue mt-4"
+      class="text-blue-100 hover:text-blue-300 mt-4"
       (click)="addPermission = !addPermission"
     >
       Add Permission
     </button>
     <div *ngIf="addPermission" class="mt-4">
       <form #permissionForm="ngForm" (ngSubmit)="submitPermissionForm()">
-        <label for="emailID" class="block text-blue-dark font-bold mb-2 text-sm"
+        <label for="emailID" class="block text-blue-100 font-bold mb-2 text-sm"
           >Email</label
         >
         <input
           type="email"
           id="emailID"
-          class="shadow appearance-none border rounded-lg w-full py-2 px-4 mb-4 text-grey-darker leading-tight"
+          class="shadow appearance-none border rounded-lg w-full py-2 px-4 mb-4 text-grey-900 leading-tight"
           [(ngModel)]="emailInPermissionForm"
           name="emailInPermissionForm"
           #name="ngModel"
           required
         />
-        <label for="level" class="block text-blue-dark font-bold mb-2 text-sm"
+        <label for="level" class="block text-blue-100 font-bold mb-2 text-sm"
           >Level</label
         >
         <select
-          class="px-2 py-2 rounded shadow border w-full mb-2 text-grey-darker leading-tight"
+          class="px-2 py-2 rounded-lg shadow border w-full mb-2 text-grey-900 leading-tight"
           id="level"
           [(ngModel)]="levelInPermissionForm"
           name="levelInPermissionForm"
           required
         >
-          <option value="2">Admin</option>
+          <option value="2" class="py-2 px-4">Admin</option>
           <option value="1">Add</option>
           <option value="0">View</option>
         </select>
         <input
           type="submit"
           value="Add"
-          class="bg-blue-dark text-white
-        hover:bg-blue-darkest font-bold py-2 px-4 rounded-lg cursor-pointer"
+          class="bg-blue-700 text-blue-100
+        hover:bg-blue-800 font-bold py-2 px-4 rounded-lg cursor-pointer shadow shadow-lg"
           [disabled]="!permissionForm.valid"
         />
       </form>

@@ -1,6 +1,6 @@
 module.exports = {
   // Tailwind Paths
-  configJS: './tailwind.js',
+  configJS: './tailwind.config.js',
   sourceCSS: './src/tailwind.css',
   outputCSS: './src/styles.scss',
   // Sass
