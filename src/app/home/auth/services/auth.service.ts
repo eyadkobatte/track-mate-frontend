@@ -110,6 +110,71 @@ export class AuthService implements OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
+  storeUsers(uids: string[]) {
+    uids.forEach((uid) => {
+      this.storeUser(uid)
+        .then((user) => console.log(user))
+        .catch((error) => console.error(error));
+    });
+    // console.log('store users called');
+    // this.http
+    //   .post<User[]>(`${environment.apiURL}/users/list`, {
+    //     usersToFind: uids
+    //   })
+    //   .subscribe((users: User[]) => {
+    //     console.log(`found users`, users);
+    //     this.allUsers.push(...users);
+    //   });
+  }
+
+  storeUser(uid: string) {
+    if (this.allUsers.find((value) => value.uid === uid)) {
+      // User details already exists in our service
+      const findUser = new Promise((resolve, reject) => {
+        let user = this.allUsers.filter(
+          (findingUser) => findingUser.uid === uid
+        );
+        resolve(user[0]);
+      });
+      return findUser;
+    } else {
+      // User details must be fetched from database
+      const findUser = new Promise((resolve, reject) => {
+        this.http
+          .post<User>(`${environment.apiURL}/users/uid`, {
+            uid: uid
+          })
+          .subscribe((user: User) => {
+            resolve(user);
+            this.allUsers.push(user);
+          });
+      });
+      return findUser;
+    }
+  }
+
+  getUser(uid: string) {
+    const findUser = new Promise((resolve, reject) => {
+      let flag = false;
+      for (let i = 0; i < this.allUsers.length; i++) {
+        if (this.allUsers[i].uid === uid) {
+          flag = true;
+          resolve(this.allUsers[i]);
+        }
+      }
+      if (flag === false) {
+        this.storeUser(uid)
+          .then((user: User) => {
+            resolve(user);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      }
+    });
+    return findUser;
+  }
+
   getUserFromEmailInDatabase(email: string) {
     const user = new Promise((resolve, reject) => {
       if (this.allUsers.find((user) => user.email === email)) {

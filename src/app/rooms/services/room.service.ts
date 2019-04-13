@@ -227,4 +227,14 @@ export class RoomService implements Resolve<Room[]> {
         this.roomUpdated.next(room);
       });
   }
+
+  saveWalletList(roomId: string, newWalletListName: string) {
+    this.http.put<Room>(`${environment.apiURL}/rooms/${roomId}/walletList`, {
+      operation: 'ADD',
+      walletListName: newWalletListName,
+      addedBy: {
+        uid: this.user.uid
+      }
+    });
+  }
 }

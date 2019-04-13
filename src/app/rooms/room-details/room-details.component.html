@@ -21,8 +21,9 @@
     <li class="py-1 pr-2 inline-block">
       <button
         class="px-4 py-2 text-blue-100 rounded bg-blue-700 hover:bg-blue-800 mb-2 text-sm"
+        (click)="addingNewItem = true; addingWhatItem = 'walletList'"
       >
-        Add New Table
+        Add New Wallet Enabled List
       </button>
     </li>
   </ul>
@@ -78,6 +79,33 @@
         (click)="saveList()"
       >
         Save List
+      </button>
+    </div>
+    <div *ngIf="addingWhatItem === 'walletList'">
+      <div>
+        <span
+          class="text-red-600 mb-2 cursor-pointer"
+          (click)="addingNewItem = false"
+          >&times;</span
+        >
+      </div>
+      <label
+        for="newWalletListName"
+        class="block text-blue-100 font-bold mb-2 text-sm"
+        >Wallet List Name</label
+      >
+      <input
+        id="newWalletListName"
+        type="text"
+        class="shadow appearance-none border rounded-lg py-2 px-4 mb-4 text-grey-900 leading-tight"
+        [(ngModel)]="newWalletListNameInput"
+      />
+      <br />
+      <button
+        class="px-4 py-2 text-blue-100 rounded bg-blue-700 hover:bg-blue-800 mb-2 text-sm"
+        (click)="saveWalletList()"
+      >
+        Save Wallet List
       </button>
     </div>
   </div>

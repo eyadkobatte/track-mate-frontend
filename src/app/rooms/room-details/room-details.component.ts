@@ -14,10 +14,11 @@ export class RoomDetailsComponent implements OnInit {
   room: Room;
 
   addingNewItem = false;
-  addingWhatItem: 'note' | 'list' | 'table';
+  addingWhatItem: 'note' | 'list' | 'walletList';
 
   newNoteInput = '';
   newListNameInput = '';
+  newWalletListNameInput = '';
 
   constructor(
     private roomService: RoomService,
@@ -26,6 +27,24 @@ export class RoomDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    let usersToFind = [];
+    if (this.room) {
+      usersToFind.push(this.room.created.uid);
+      this.room.noteItems.forEach((note) => {
+        usersToFind.push(note.addedBy.uid);
+      });
+      this.room.listItems.forEach((list) => {
+        usersToFind.push(list.addedBy.uid);
+        list.items.forEach((item) => {
+          usersToFind.push(item.addedBy.uid);
+        });
+      });
+      usersToFind = usersToFind.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+      this.authService.storeUsers(usersToFind);
+    }
+
     this.route.params.subscribe((params: Params) => {
       this.roomId = params['id'];
       this.roomService.getRoom(this.roomId).subscribe((room: Room) => {
@@ -49,6 +68,10 @@ export class RoomDetailsComponent implements OnInit {
     this.roomService.addNewList(this.roomId, this.newListNameInput);
     this.newListNameInput = '';
     this.addingNewItem = false;
+  }
+
+  saveWalletList() {
+    this.roomService;
   }
 
   getUsername(uid: string) {

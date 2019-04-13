@@ -1,3 +1,5 @@
+import {User} from 'src/app/home/auth/user';
+import {AuthService} from './../../../home/auth/services/auth.service';
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
@@ -13,7 +15,9 @@ export class NotesComponent implements OnInit {
   };
   @Output() onDeleteNoteItem = new EventEmitter<string>();
 
-  constructor() {}
+  users: User[] = this.authService.allUsers;
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {}
 
@@ -22,6 +26,13 @@ export class NotesComponent implements OnInit {
   }
 
   getUsername(uid: string) {
-    return 'Eyad Kobatte';
+    if (this.users.find((value) => value.uid === uid)) {
+      console.log(uid);
+      return this.users.find((value) => value.uid === uid).displayName;
+    } else {
+      this.authService.getUser(uid).then((user) => {
+        console.log(user);
+      });
+    }
   }
 }

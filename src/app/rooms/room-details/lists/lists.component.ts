@@ -1,3 +1,5 @@
+import {AuthService} from './../../../home/auth/services/auth.service';
+import {User} from 'src/app/home/auth/user';
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {RoomService} from '../../services/room.service';
 import {Room} from '../../room';
@@ -32,7 +34,12 @@ export class ListsComponent implements OnInit {
 
   newItemInput = '';
 
-  constructor(private roomService: RoomService) {}
+  users: User[] = this.authService.allUsers;
+
+  constructor(
+    private roomService: RoomService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {}
 
@@ -41,7 +48,14 @@ export class ListsComponent implements OnInit {
   }
 
   getUsername(uid: string) {
-    return 'Eyad Kobatte';
+    if (this.users.find((value) => value.uid === uid)) {
+      console.log(uid);
+      return this.users.find((value) => value.uid === uid).displayName;
+    } else {
+      this.authService.getUser(uid).then((user) => {
+        console.log(user);
+      });
+    }
   }
 
   addNewItem() {
