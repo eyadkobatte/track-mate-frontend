@@ -1,8 +1,8 @@
-import {AuthService} from './../../home/auth/services/auth.service';
-import {ActivatedRoute, Params} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
-import {RoomService} from '../services/room.service';
-import {Room} from '../room';
+import { AuthService } from './../../home/auth/services/auth.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RoomService } from '../services/room.service';
+import { Room } from '../room';
 
 @Component({
   selector: 'app-room-details',
@@ -20,22 +20,18 @@ export class RoomDetailsComponent implements OnInit {
   newListNameInput = '';
   newWalletListNameInput = '';
 
-  constructor(
-    private roomService: RoomService,
-    private authService: AuthService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private roomService: RoomService, private authService: AuthService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     let usersToFind = [];
     if (this.room) {
       usersToFind.push(this.room.created.uid);
-      this.room.noteItems.forEach((note) => {
+      this.room.noteItems.forEach(note => {
         usersToFind.push(note.addedBy.uid);
       });
-      this.room.listItems.forEach((list) => {
+      this.room.listItems.forEach(list => {
         usersToFind.push(list.addedBy.uid);
-        list.items.forEach((item) => {
+        list.items.forEach(item => {
           usersToFind.push(item.addedBy.uid);
         });
       });
@@ -65,13 +61,15 @@ export class RoomDetailsComponent implements OnInit {
   }
 
   saveList() {
-    this.roomService.addNewList(this.roomId, this.newListNameInput);
+    this.roomService.addNewList(this.roomId, this.newListNameInput, false);
     this.newListNameInput = '';
     this.addingNewItem = false;
   }
 
   saveWalletList() {
-    this.roomService;
+    this.roomService.addNewList(this.roomId, this.newWalletListNameInput, true);
+    this.newWalletListNameInput = '';
+    this.addingNewItem = false;
   }
 
   getUsername(uid: string) {

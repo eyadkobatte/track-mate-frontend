@@ -1,12 +1,6 @@
 <li class="lg:w-1/4">
-  <div
-    class="mb-4 mt-2 w-full rounded shadow bg-blue-800 p-4 shadow-lg relative"
-  >
-    <span
-      class="absolute top-0 right-0 mt-2 mr-2 text-red-600 cursor-pointer"
-      (click)="deleteList()"
-      >&times;</span
-    >
+  <div class="mb-4 mt-2 w-full rounded shadow bg-blue-800 p-4 shadow-lg relative">
+    <span class="absolute top-0 right-0 mt-2 mr-2 text-red-600 cursor-pointer" (click)="deleteList()">&times;</span>
     <p class="text-white mb-2">{{ list.listName }}</p>
     <div class="text-right">
       <span class="text-blue-100 text-sm"
@@ -26,10 +20,18 @@
             (click)="deleteItemFromList(item._id)"
             >&times;</span
           >
-          <p class="text-white">{{ item.itemName }}</p>
+          <p class="text-white">
+            {{ item.itemName }}
+            <button
+              *ngIf="list.isWallet"
+              class="text-xs px-2 py-1 rounded bg-blue-900 m-2"
+              (click)="showBuyScreen(item)"
+            >
+              Buy
+            </button>
+          </p>
           <small class="text-blue-100 text-xs"
-            >By {{ getUsername(item.addedBy.uid) }} on
-            {{ item.addedBy.time | date }}</small
+            >By {{ getUsername(item.addedBy.uid) }} on {{ item.addedBy.time | date }}</small
           >
         </div>
       </li>
@@ -39,13 +41,12 @@
           class="shadow appearance-none border rounded-lg py-2 mb-2 text-gray-900 leading-tight px-4"
           [(ngModel)]="newItemInput"
         />
-        <button
-          class="bg-blue-900 text-blue-100 py-2 px-4 rounded-lg"
-          (click)="addNewItem()"
-        >
+        <button class="bg-blue-900 text-blue-100 py-2 px-4 rounded-lg" (click)="addNewItem()">
           Add
         </button>
       </li>
     </ul>
   </div>
 </li>
+
+<app-buy-item *ngIf="isBuyingItem" [room]="room" [item]="buyingItem" (onBuyItem)="buyItem(amount)" (onCloseBuyItem)="closeBuyItem()"></app-buy-item>

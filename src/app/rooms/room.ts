@@ -30,6 +30,7 @@ export interface Room {
     {
       _id?: string;
       listName: string;
+      isWallet: boolean;
       addedBy: {
         uid: string;
         time: Date;
@@ -43,6 +44,10 @@ export interface Room {
             time: Date;
           };
           enabled: boolean;
+          bought: {
+            uid: string;
+            time: Date;
+          };
         }
       ];
     }

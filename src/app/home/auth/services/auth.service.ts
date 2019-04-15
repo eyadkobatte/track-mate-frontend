@@ -1,13 +1,13 @@
-import {Injectable, OnDestroy} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {Subscription, BehaviorSubject} from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 import * as firebase from 'firebase/app';
-import {HttpClient} from '@angular/common/http';
-import {environment} from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-import {User} from '../user';
-import {Router} from '@angular/router';
+import { User } from '../user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,49 +18,38 @@ export class AuthService implements OnDestroy {
   private userSubscription: Subscription;
 
   userLoggedIn = new BehaviorSubject<User>(null);
+  public currentlyLoggedInUser: User = null;
 
   allUsers: User[] = [];
 
-  constructor(
-    private afAuth: AngularFireAuth,
-    private http: HttpClient,
-    private router: Router
-  ) {
+  constructor(private afAuth: AngularFireAuth, private http: HttpClient, private router: Router) {
     // This will only work for repeating users because when we get users from database and if its a new users, there wont be any record for it.
-    this.userSubscription = this.afAuth.authState.subscribe(
-      (user: firebase.User) => {
-        if (user) {
-          this.firebaseUserDetails = user;
-          this.getUserFromDatabase(user.uid).subscribe(
-            (loggedInUsers: User[]) => {
-              if (loggedInUsers.length > 0)
-                this.sendOutUserDetails(loggedInUsers[0]);
-            }
-          );
-        } else {
-          this.firebaseUserDetails = null;
-          this.sendOutUserDetails(null);
-        }
+    this.userSubscription = this.afAuth.authState.subscribe((user: firebase.User) => {
+      if (user) {
+        this.firebaseUserDetails = user;
+        this.getUserFromDatabase(user.uid).subscribe((loggedInUsers: User[]) => {
+          if (loggedInUsers.length > 0) {
+            this.currentlyLoggedInUser = loggedInUsers[0];
+            this.sendOutUserDetails(loggedInUsers[0]);
+          }
+        });
+      } else {
+        this.firebaseUserDetails = null;
+        this.sendOutUserDetails(null);
       }
-    );
+    });
   }
 
   signInWithGoogle() {
-    return this.afAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    );
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
 
   signInWithFacebook() {
-    return this.afAuth.auth.signInWithPopup(
-      new firebase.auth.FacebookAuthProvider()
-    );
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
   }
 
   signInWithTwitter() {
-    return this.afAuth.auth.signInWithPopup(
-      new firebase.auth.TwitterAuthProvider()
-    );
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
   }
 
   sendOutUserDetails(user: User) {
@@ -95,7 +84,7 @@ export class AuthService implements OnDestroy {
   }
 
   logout() {
-    this.afAuth.auth.signOut().then((res) => {
+    this.afAuth.auth.signOut().then(res => {
       this.userLoggedIn.next(null);
       this.firebaseUserDetails = null;
       this.router.navigate(['/']);
@@ -111,10 +100,10 @@ export class AuthService implements OnDestroy {
   }
 
   storeUsers(uids: string[]) {
-    uids.forEach((uid) => {
+    uids.forEach(uid => {
       this.storeUser(uid)
-        .then((user) => console.log(user))
-        .catch((error) => console.error(error));
+        .then(user => console.log(user))
+        .catch(error => console.error(error));
     });
     // console.log('store users called');
     // this.http
@@ -128,12 +117,10 @@ export class AuthService implements OnDestroy {
   }
 
   storeUser(uid: string) {
-    if (this.allUsers.find((value) => value.uid === uid)) {
+    if (this.allUsers.find(value => value.uid === uid)) {
       // User details already exists in our service
       const findUser = new Promise((resolve, reject) => {
-        let user = this.allUsers.filter(
-          (findingUser) => findingUser.uid === uid
-        );
+        let user = this.allUsers.filter(findingUser => findingUser.uid === uid);
         resolve(user[0]);
       });
       return findUser;
@@ -167,7 +154,7 @@ export class AuthService implements OnDestroy {
           .then((user: User) => {
             resolve(user);
           })
-          .catch((error) => {
+          .catch(error => {
             reject(error);
           });
       }
@@ -177,8 +164,8 @@ export class AuthService implements OnDestroy {
 
   getUserFromEmailInDatabase(email: string) {
     const user = new Promise((resolve, reject) => {
-      if (this.allUsers.find((user) => user.email === email)) {
-        resolve(this.allUsers.find((user) => user.email === email));
+      if (this.allUsers.find(user => user.email === email)) {
+        resolve(this.allUsers.find(user => user.email === email));
       } else {
         this.http
           .post(`${environment.apiURL}/users/email`, {
@@ -189,7 +176,7 @@ export class AuthService implements OnDestroy {
               this.allUsers.push(user);
               resolve(user);
             },
-            (error) => {
+            error => {
               reject(error);
             }
           );
@@ -200,8 +187,8 @@ export class AuthService implements OnDestroy {
 
   getUserFromUIDInDatabase(uid: string) {
     const user = new Promise((resolve, reject) => {
-      if (this.allUsers.find((user) => user.uid === uid)) {
-        resolve(this.allUsers.find((user) => user.uid === uid));
+      if (this.allUsers.find(user => user.uid === uid)) {
+        resolve(this.allUsers.find(user => user.uid === uid));
       } else {
         this.http
           .post(`${environment.apiURL}/users/email`, {
@@ -212,7 +199,7 @@ export class AuthService implements OnDestroy {
               this.allUsers.push(user);
               resolve(user);
             },
-            (error) => {
+            error => {
               reject(error);
             }
           );

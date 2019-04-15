@@ -1,0 +1,19 @@
+<div class="buy-item-container bg-blue-900 rounded-lg p-4 mx-auto mt-16 lg:w-1/2 sm:w-3/4 md:w-3/4 relative">
+  <div class="bg-blue-900">
+    <h4 class="text-blue-100">
+      Buying {{ item.itemName }} for {{ room.roomName }}
+      <span (click)="closeBuyItem()" class="float-right cursor-pointer text-blue-100">&times;</span>
+    </h4>
+
+    <div class="mt-4">
+      <h4 class="text-blue-100 ">How much are you paying for {{ item.itemName }}?</h4>
+      <input
+        class="shadow appearance-none border rounded-lg py-2 my-2 text-gray-900 leading-tight px-4"
+        type="number"
+        [(ngModel)]="amount"
+        min="0"
+      />
+      <button (click)="buyItem()" class="text-blue-100 px-4 py-2 mb-4 bg-blue-800 hover:bg-blue-700 rounded">Submit</button>
+    </div>
+  </div>
+</div>

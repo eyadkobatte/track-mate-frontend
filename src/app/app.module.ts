@@ -17,6 +17,7 @@ import {RoomSettingsComponent} from './rooms/room-settings/room-settings.compone
 import {RoomDetailsComponent} from './rooms/room-details/room-details.component';
 import { NotesComponent } from './rooms/room-details/notes/notes.component';
 import { ListsComponent } from './rooms/room-details/lists/lists.component';
+import { BuyItemComponent } from './rooms/room-details/lists/buy-item/buy-item.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ListsComponent } from './rooms/room-details/lists/lists.component';
     RoomSettingsComponent,
     RoomDetailsComponent,
     NotesComponent,
-    ListsComponent
+    ListsComponent,
+    BuyItemComponent
   ],
   imports: [
     BrowserModule,
