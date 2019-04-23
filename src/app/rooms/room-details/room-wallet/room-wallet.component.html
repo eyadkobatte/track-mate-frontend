@@ -1,0 +1,16 @@
+<div>
+  <h4 class="text-lg text-white">Wallet for {{ room.roomName }}</h4>
+  <ul>
+    <li *ngFor="let transaction of transactions">
+      <span class="text-blue-100 font-bold">{{
+        getUsername(transaction.uid)
+      }}</span>
+      <span class="text-blue-100">: </span>
+      <span
+        [class.text-red-500]="transaction.amount < 0"
+        [class.text-green-500]="transaction.amount > 0"
+        >{{ transaction.amount | currency: 'INR' | minusSignToParens }}</span
+      >
+    </li>
+  </ul>
+</div>
