@@ -48,6 +48,13 @@ export interface Room {
             uid: string;
             time: Date;
           };
+          dues: [
+            {
+              _id?: string;
+              uid: string;
+              amount: number;
+            }
+          ];
         }
       ];
     }

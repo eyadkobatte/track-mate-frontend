@@ -1,8 +1,8 @@
-import { AuthService } from './../../../home/auth/services/auth.service';
-import { User } from 'src/app/home/auth/user';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { RoomService } from '../../services/room.service';
-import { Room } from '../../room';
+import {AuthService} from './../../../home/auth/services/auth.service';
+import {User} from 'src/app/home/auth/user';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {RoomService} from '../../services/room.service';
+import {Room} from '../../room';
 
 @Component({
   selector: 'app-lists',
@@ -56,7 +56,10 @@ export class ListsComponent implements OnInit {
   } = null;
   isBuyingItem = false;
 
-  constructor(private roomService: RoomService, private authService: AuthService) {}
+  constructor(
+    private roomService: RoomService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     if (this.list.isWallet === true) {
@@ -71,17 +74,21 @@ export class ListsComponent implements OnInit {
   }
 
   getUsername(uid: string) {
-    if (this.users.find(value => value.uid === uid)) {
-      return this.users.find(value => value.uid === uid).displayName;
+    if (this.users.find((value) => value.uid === uid)) {
+      return this.users.find((value) => value.uid === uid).displayName;
     } else {
-      this.authService.getUser(uid).then(user => {
+      this.authService.getUser(uid).then((user) => {
         // TODO: What am i doing with this user
       });
     }
   }
 
   addNewItem() {
-    this.roomService.addItemInList(this.room._id, this.list._id, this.newItemInput);
+    this.roomService.addItemInList(
+      this.room._id,
+      this.list._id,
+      this.newItemInput
+    );
   }
 
   deleteItemFromList(itemId: string) {
@@ -98,6 +105,11 @@ export class ListsComponent implements OnInit {
   }
 
   buyItem(amount: number) {
-    this.roomService.buyItemInList(this.room._id, this.list._id, this.buyingItem._id, amount);
+    this.roomService.buyItemInList(
+      this.room._id,
+      this.list._id,
+      this.buyingItem._id,
+      amount
+    );
   }
 }

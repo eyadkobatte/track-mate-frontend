@@ -18,6 +18,8 @@ import {RoomDetailsComponent} from './rooms/room-details/room-details.component'
 import { NotesComponent } from './rooms/room-details/notes/notes.component';
 import { ListsComponent } from './rooms/room-details/lists/lists.component';
 import { BuyItemComponent } from './rooms/room-details/lists/buy-item/buy-item.component';
+import { RoomWalletComponent } from './rooms/room-details/room-wallet/room-wallet.component';
+import { MinusSignToParensPipe } from './rooms/room-details/room-wallet/minus-sign-to-parens.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { BuyItemComponent } from './rooms/room-details/lists/buy-item/buy-item.c
     RoomDetailsComponent,
     NotesComponent,
     ListsComponent,
-    BuyItemComponent
+    BuyItemComponent,
+    RoomWalletComponent,
+    MinusSignToParensPipe
   ],
   imports: [
     BrowserModule,
