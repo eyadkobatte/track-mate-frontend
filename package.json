@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "prestart": "ngtw build",
-    "start": "ng serve & ngtw watch",
-    "build": "ngtw build && ng build",
+    "start": "ng serve",
+    "build": "npx tailwind build src/tailwind.css -o src/styles.scss && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

@@ -1,16 +1,10 @@
-import {map} from 'rxjs/operators';
-import {AuthService} from './../home/auth/services/auth.service';
-import {
-  Component,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-  NgZone
-} from '@angular/core';
-import {RoomService} from './services/room.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Room} from './room';
-import {User} from '../home/auth/user';
+import { AuthService } from './../home/auth/services/auth.service';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { RoomService } from './services/room.service';
+import { Router } from '@angular/router';
+import { Room } from './room';
+import { User } from '../home/auth/user';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-rooms',
@@ -21,6 +15,8 @@ export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
   user: User;
   users: User[] = this.authService.allUsers;
+
+  storingAllUsers: User[] = this.userService.storedUsers;
 
   // roomPermissions where user can access room settings
   roomPermissions = [];
@@ -34,7 +30,7 @@ export class RoomsComponent implements OnInit {
     private authService: AuthService,
     private roomService: RoomService,
     private router: Router,
-    private ngZone: NgZone
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -53,7 +49,7 @@ export class RoomsComponent implements OnInit {
         if (room.created.uid === this.user.uid) {
           this.roomPermissions.push(room._id);
         }
-        room.permissions.map((permission) => {
+        room.permissions.map(permission => {
           if (permission.uid === this.user.uid) {
             if (permission.level === 2) {
               this.roomPermissions.push(room._id);
@@ -66,6 +62,10 @@ export class RoomsComponent implements OnInit {
       usersToFind = usersToFind.filter((value, index, self) => {
         return self.indexOf(value) === index;
       });
+      this.userService.storeUsers(usersToFind);
+
+      setTimeout(() => console.log(this.storingAllUsers), 5000);
+
       this.authService.storeUsers(usersToFind);
       // .getUsersFromDatabase(usersToFind)
       // .subscribe((users: User[]) => {
@@ -75,8 +75,7 @@ export class RoomsComponent implements OnInit {
   }
 
   getUserName(uid: string) {
-    if (this.users.find((value) => value.uid === uid))
-      return this.users.find((value) => value.uid === uid).displayName;
+    if (this.users.find(value => value.uid === uid)) return this.users.find(value => value.uid === uid).displayName;
   }
 
   openRoomSettings(room: Room) {

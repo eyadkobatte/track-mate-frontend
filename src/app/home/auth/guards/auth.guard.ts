@@ -24,14 +24,12 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (this.authService.isLoggedIn()) {
-      console.log('authguard', true);
       return true;
     }
     return this.authService.getFirebaseAuthObservable().pipe(
       take(1),
       map((user) => !!user),
       tap((loggedIn: boolean) => {
-        console.log('obs', loggedIn);
         if (!loggedIn) {
           this.router.navigate(['/']);
           return false;
